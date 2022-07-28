@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://pipe.tscn" type="PackedScene" id=1]
+[ext_resource path="res://twoPipe.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32, 405 )
+
+[node name="twoPipe" type="KinematicBody2D" groups=["pipeGroup"]]
+script = ExtResource( 2 )
+
+[node name="topPipe" parent="." instance=ExtResource( 1 )]
+scale = Vector2( -1, 1 )
+
+[node name="downPipe" parent="." instance=ExtResource( 1 )]
+rotation = 3.14159
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 24, 0 )
+
+[node name="outerArea" type="Area2D" parent="."]
+position = Vector2( -2, 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="outerArea"]
+position = Vector2( 84, 4 )
+shape = SubResource( 1 )
+
+[connection signal="body_entered" from="topPipe" to="." method="_on_topPipe_body_entered"]
+[connection signal="body_entered" from="downPipe" to="." method="_on_downPipe_body_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="body_exited" from="outerArea" to="." method="_on_outerArea_body_exited"]
